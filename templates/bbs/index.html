@@ -1,0 +1,21 @@
+<!-- 共通テンプレートの呼び出し -->
+{% extends "base.html" %}
+<!-- カスタムテンプレートタグの読み込み -->
+{% load django_bootstrap5 %}
+
+{% block content %}
+
+<h1>CRUDアプリの作成</h1>
+{% for article in object_list %}
+<div class="container">
+    <p>{{article.id}}:{{article.auther}}:{{article.created_at}}</p>
+    <p><a href='{% url "bbs:detail" article.id %}'>{{article.content}}</a></p>
+</div>
+{% endfor %}
+
+<!-- 新規投稿ページのリンク -->
+<div>
+    <button onclick='location.href="{% url "bbs:create" %}"'>新規投稿</button>
+</div>
+
+{% endblock %}

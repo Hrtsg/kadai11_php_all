@@ -1,0 +1,22 @@
+{% load django_bootstrap5 %}<!-- カスタムテンプレートタグの読み込み -->
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Djangoを使用したWebアプリ！</title>
+    <style>
+        .container {
+            background-color: rgb(230, 230, 230);
+        }
+    </style>
+</head>
+
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<!-- 共通テンプレートの呼び出し -->
+{% extends "base.html" %}
+<!-- カスタムテンプレートタグの読み込み -->
+{% load django_bootstrap5 %}
+
+{% block content %}
+<h1>{{article.id}}の投稿詳細ページ</h1>
+<div class="container">
+    <p>{{article.auther}}:{{article.created_at}}</p>
+    <!-- 最終更新 -->
+    <p>最終更新:{{article.update_at}}:</p>
+    <p>{{article.content}}</p>
+    <!-- 編集 -->
+    <p><a href='{% url "bbs:update" article.pk %}'>編集</a></p>
+    <!-- 削除 -->
+    <p><a href='{% url "bbs:delete" article.pk %}'>削除</a></p>
+
+</div>
+<p><a href='{%url "bbs:index"%}'>一覧ページに戻る</a></p>
+
+{% endblock %}
