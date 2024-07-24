@@ -12,6 +12,8 @@ urlpatterns = [
     path('create/', views.CreateView.as_view(),name='create'),
     #投稿編集のページ
     path('<int:pk>/update/',views.UpdateView.as_view(),name='update'),
-       #削除
+    #削除
     path('<int:pk>/delete/',views.DeleteView.as_view(),name='delete'),
+    # 検索
+    path('search/', views.search, name='search'),
 ]

@@ -1,10 +1,13 @@
-from django.shortcuts import render
+from django.views import generic #汎用ビューをインポート
+from .models import Article #Article モデルクラスをインポート
+from django.urls import reverse_lazy #reverse_lazy関数をインポート
+from django.shortcuts import render #関数をインポート
+from .forms import SearchForm #forms.py からSerchForm
 from django.http import HttpResponse #モジュールを読み込み
 from django.db.models import Q #Qクラスのインポート
-from django.views import generic #汎用ビューをインポート
-from django.urls import reverse_lazy #reverse_lazy関数をインポート
-from .models import Article #Article モデルクラスをインポート
 
+from django.contrib.auth.mixins import LoginRequiredMixin # インポート
+from django.core.exceptions import PermissionDenied # インポート
 
 # Create your views here.
 # IndexViewクラスを作成
@@ -18,19 +21,41 @@ class DetailView(generic.DetailView):
     template_name = 'bbs/detail.html'
 
 #CreateViewクラスを作成
-class CreateView(generic.edit.CreateView):
+class CreateView(LoginRequiredMixin, generic.edit.CreateView):
     model = Article
     template_name = 'bbs/create.html'
-    fields = '__all__'
+    fields = ['content'] #項目をcontentのみに変更
+
+    #格納する値をチェック
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super(CreateView, self).form_valid(form)
 
 #UpdateViewクラスを作成
-class UpdateView(generic.edit.UpdateView):
+class UpdateView(LoginRequiredMixin, generic.edit.UpdateView):
     model = Article
     template_name = 'bbs/create.html'
-    fields = '__all__'
+    fields = ['content'] # 項目をcontentのみに変更
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.author != self.request.user:
+            raise PermissionDenied('編集権限がありません。')
+        return super(UpdateView, self).dispatch(request, *args, **kwargs)
 
 #DeleteViewクラスを作成
-class DeleteView(generic.edit.DeleteView):
+class DeleteView(LoginRequiredMixin, generic.edit.DeleteView):
     model = Article
     template_name = 'bbs/delete.html'
     success_url = reverse_lazy('bbs:index')
+
+# 検索機能のビュー
+def search(request):
+    articles = None
+    searchform = SearchForm(request.GET)
+
+    # Formに正常なデータがあれば
+    if searchform.is_valid():
+        query = searchform.cleaned_data['query']
+        articles = Article.objects.filter(content__icontains=query)
+    return render(request, 'bbs/results.html', {'articles': articles, 'searchform': searchform})

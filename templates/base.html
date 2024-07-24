@@ -6,17 +6,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Djangoを使用したWebアプリ！</title>
-    <style>
-        .container {
-            background-color: rgb(230, 230, 230);
-        }
-    </style>
+    <!-- BootstrapのCSSの読み込み -->
+    {% bootstrap_css %}
+    <!-- JavaScriptの読み込み -->
+    {% bootstrap_javascript %}
+
+    <title>Webapp w Django!</title>
+    <!-- <style>
+            .container {
+                background-color: rgb(216, 216, 216);
+            }
+        </style> -->
 </head>
 
 <body>
-    {% block content %}
-    {% endblock %}
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Fifth navbar example">
+        <div class="container-fluid">
+            <!-- トップに戻る -->
+            <a class="navbar-brand" href='{% url "bbs:index" %}'>CRUD app with Django</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample05"
+                aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExample05">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        {% if user.is_authenticated %}
+                        <span class="nav-link active">{{ user }}でログイン中</span>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-link active btn btn-link"
+                                style="padding: 0; border: none; background: none;">ログアウト</button>
+                        </form>
+                        {% else %}
+                        <a class="nav-link active" href="{% url 'login' %}">ログイン</a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href='{% url "bbs:index" %}'>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-bs-toggle="dropdown"
+                            aria-expanded="false">Dropdown</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown05">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex" method="get" action='{% url "bbs:search" %}'>
+                    {{ searchform.query }}
+                    <button class="btn btn-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 
 </html>

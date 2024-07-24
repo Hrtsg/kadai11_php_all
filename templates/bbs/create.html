@@ -9,12 +9,13 @@
 <h1>投稿の{{object|yesno:'編集,新規作成'}}</h1>
 
 <form action="" method='post'>
-    <!-- すべての項目を表示 -->
-    {% csrf_token %}{{ form.as_p }}
-    <!-- 新規と編集で表示を変更 -->
-    <button type='submit'>{{object|yesno:'更新,作成'}}</button>
+    <!-- テンプレートタグでフォームを設置 -->
+    {% csrf_token %}{% bootstrap_form form %}
+    <!-- テンプレートタグでボタンを設置 -->
+    {% bootstrap_button button_type="submit" content=object|yesno:"更新,作成" size="md" %}
 </form>
-<div>
-    <button onclick='JavaScript:history.back()'>戻る</button>
+<div class="mt-3">
+    <!-- テンプレートタグでボタンを設置 -->
+    <a href='{% url "bbs:index" %}' class="btn btn-secondary">一覧ページへ戻る</a>
 </div>
 {% endblock %}

@@ -6,15 +6,13 @@
 {% block content %}
 
 <!-- 削除 -->
-<h1>投稿の削除</h1>
-<p>'{{object.id}}'の投稿を削除しますか？</p>
-<form action="" method='post'>
-    <!-- すべての項目を表示 -->
-    {% csrf_token %}{{ form.as_p }}
-    <!--削除ボタン -->
-    <button type='submit'>削除</button>
+<h1 class="mt-5">投稿の削除</h1>
+<p>'{{ object.id }}'の投稿を削除しますか?</p>
+<form action='' method='post'>{% csrf_token %}
+    {% bootstrap_button button_type="submit" button_class="btn-danger" content="削除" size="md" %}<!-- テンプレートタグでボタンを設置 -->
 </form>
-<div>
-    <button onclick='JavaScript:history.back()'>戻る</button>
+<div class="mt-3"><!-- クラスを設定 -->
+    <a href='{% url "bbs:index" %}' class="btn btn-secondary">一覧ページへ戻る</a><!-- テンプレートタグでボタンを設置 --></a>
 </div>
+
 {% endblock %}

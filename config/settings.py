@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
 import os
 import environ
 
@@ -49,6 +48,7 @@ INSTALLED_APPS = [
     'hello.apps.HelloConfig', #作成したhelloアプリを追加
     'bbs.apps.BbsConfig', #作成したbbsアプリを追加
     'django_bootstrap5', #bootstrap5
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'bbs.context_processors.search_form',
             ],
         },
     },
@@ -138,3 +139,7 @@ SRATICFILES_DIRS = [BASE_DIR / 'static'] #静的ファイルのディレクト�
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ログイン後のリダイレクト先
+LOGIN_REDIRECT_URL = '/bbs/'
+# LOGOUT_REDIRECT_URL = '/'  # ログアウト後のリダイレクト先
